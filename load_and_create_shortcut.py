@@ -6,7 +6,7 @@ from dlt.sources.credentials import ConnectionStringCredentials
 import requests
 from msal import ConfidentialClientApplication
 
-sql_conn_str = os.environ["MSSQL_CONN_STR"]
+
 client_id = os.environ["FABRIC_CLIENT_ID"]
 client_secret = os.environ["FABRIC_CLIENT_SECRET"]
 tenant_id = os.environ["FABRIC_TENANT_ID"]
@@ -14,12 +14,10 @@ workspace_id = os.environ["FABRIC_WORKSPACE_ID"]
 item_id = os.environ["FABRIC_ITEM_ID"]
 
 def run_dlt_pipeline():
-    credentials = ConnectionStringCredentials(connection_string=sql_conn_str)
-    # Initialize the source and resources
     source = sql_database(
-        credentials=credentials,
-        table_names=["Products", "Customers", "Orders"]
-    )
+    credentials=dlt.secrets["source"]["mssql_docker"],
+    table_names=["Products", "Customers", "Orders"]
+)
 
     resources = [
         source.resources["Products"].apply_hints(
