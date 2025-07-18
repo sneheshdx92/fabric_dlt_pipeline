@@ -2,14 +2,17 @@ import os
 import dlt
 from dlt.sources.sql_database import sql_database
 from dlt.extract.incremental import Incremental
+from dlt.sources.credentials import ConnectionStringCredentials
 import requests
 from msal import ConfidentialClientApplication
 from dotenv import load_dotenv
 
 def run_dlt_pipeline():
+    sql_conn_str = os.environ["MSSQL_CONN_STR"]
+    credentials = ConnectionStringCredentials(connection_string=sql_conn_str)
     # Initialize the source and resources
     source = sql_database(
-        credentials=dlt.secrets["source"]["mssql_docker"],
+        credentials=credentials,
         table_names=["Products", "Customers", "Orders"]
     )
 
