@@ -1,0 +1,15 @@
+[project]
+name = "fabric_dlt_pipeline"
+version = "0.1.0"
+description = "DLT + Shortcut integration for Microsoft Fabric"
+requires-python = ">=3.10"
+
+dependencies = [
+    "requests==2.31.0",
+    "python-dotenv==1.0.1",
+    "msal>=1.32.3",
+    "dlt[az,deltalake,sql-database]>=1.14.1",
+    "pyodbc>=5.2.0",
+    "enlighten>=1.14.1",
+]
+

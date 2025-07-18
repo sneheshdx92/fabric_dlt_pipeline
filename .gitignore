@@ -1,0 +1,7 @@
+# Ignore DLT secrets file
+.env
+.dlt/
+__pypackages__/
+.venv/
+
+
