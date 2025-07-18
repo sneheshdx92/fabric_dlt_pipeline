@@ -40,6 +40,16 @@ jobs:
     - name: Sync dependencies with uv
       run: |
           uv sync
+    - name: Run pipeline with .venv
+      run: .venv/bin/python load_and_create_shortcut.py
+      env:
+        MSSQL_CONN_STR: ${{ secrets.MSSQL_CONN_STR }}
+        FABRIC_CLIENT_ID: ${{ secrets.FABRIC_CLIENT_ID }}
+        FABRIC_CLIENT_SECRET: ${{ secrets.FABRIC_CLIENT_SECRET }}
+        FABRIC_TENANT_ID: ${{ secrets.FABRIC_TENANT_ID }}
+        FABRIC_WORKSPACE_ID: ${{ secrets.FABRIC_WORKSPACE_ID }}
+        FABRIC_LAKEHOUSE_ID: ${{ secrets.FABRIC_LAKEHOUSE_ID }}
+        FABRIC_ITEM_ID: ${{ secrets.FABRIC_ITEM_ID }}
 
     - name: 🚀 Run DLT incremental load and create Fabric Shortcut if applicable
       run: python load_and_create_shortcut.py
