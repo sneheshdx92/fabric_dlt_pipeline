@@ -5,10 +5,16 @@ from dlt.extract.incremental import Incremental
 from dlt.sources.credentials import ConnectionStringCredentials
 import requests
 from msal import ConfidentialClientApplication
-from dotenv import load_dotenv
+
+sql_conn_str = os.environ["MSSQL_CONN_STR"]
+client_id = os.environ("FABRIC_CLIENT_ID")
+client_secret = os.environ("FABRIC_CLIENT_SECRET")
+tenant_id = os.environ("FABRIC_TENANT_ID")
+workspace_id = os.environ("FABRIC_WORKSPACE_ID")
+item_id = os.environ("FABRIC_ITEM_ID")
+
 
 def run_dlt_pipeline():
-    sql_conn_str = os.environ["MSSQL_CONN_STR"]
     credentials = ConnectionStringCredentials(connection_string=sql_conn_str)
     # Initialize the source and resources
     source = sql_database(
@@ -84,15 +90,6 @@ def create_shortcut_if_not_exists(folder_name, url, headers, workspace_id, item_
 
 
 def create_shortcuts():
-
-    load_dotenv()
-
-    client_id = os.getenv("FABRIC_CLIENT_ID")
-    client_secret = os.getenv("FABRIC_CLIENT_SECRET")
-    tenant_id = os.getenv("FABRIC_TENANT_ID")
-    workspace_id = os.getenv("FABRIC_WORKSPACE_ID")
-    item_id = os.getenv("FABRIC_ITEM_ID")
-
     authority = f"https://login.microsoftonline.com/{tenant_id}"
     scopes = ["https://analysis.windows.net/powerbi/api/.default"]
 

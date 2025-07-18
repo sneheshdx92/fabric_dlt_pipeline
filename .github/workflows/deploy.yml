@@ -1,0 +1,45 @@
+name: Run DLT + Fabric Shortcuts
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  dlt_fabric_pipeline:
+    runs-on: ubuntu-latest
+    env:
+      MSSQL_CONN_STR: ${{ secrets.MSSQL_CONN_STR }}
+      FABRIC_CLIENT_ID: ${{ secrets.FABRIC_CLIENT_ID }}
+      FABRIC_CLIENT_SECRET: ${{ secrets.FABRIC_CLIENT_SECRET }}
+      FABRIC_TENANT_ID: ${{ secrets.FABRIC_TENANT_ID }}
+      FABRIC_WORKSPACE_ID: ${{ secrets.FABRIC_WORKSPACE_ID }}
+      FABRIC_LAKEHOUSE_ID: ${{ secrets.FABRIC_LAKEHOUSE_ID }}
+      FABRIC_ITEM_ID: ${{ secrets.FABRIC_ITEM_ID }}
+    steps:
+
+    - name: 📥 Checkout repo
+      uses: actions/checkout@v3
+
+    - name: 🧪 Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.12
+    
+    - name: Install ODBC Driver
+        run: |
+          curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+          curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list | sudo tee /etc/apt/sources.list.d/msprod.list
+          sudo apt-get update
+          sudo ACCEPT_EULA=Y apt-get install -y msodbcsql17 unixodbc-dev
+
+    - name: 📦 Install uv
+      run: pip install uv
+
+    - name: 📦 Install project dependencies with uv
+      run: uv pip install --system
+
+    - name: 🚀 Run DLT incremental load and create Fabric Shortcut if applicable
+      run: python load_and_create_shortcut.py
+
+
