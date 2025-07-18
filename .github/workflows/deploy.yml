@@ -37,7 +37,7 @@ jobs:
       run: pip install uv
 
     - name: 📦 Install project dependencies with uv
-      run: uv pip install --system
+      run: uv sync
 
     - name: 🚀 Run DLT incremental load and create Fabric Shortcut if applicable
       run: python load_and_create_shortcut.py
