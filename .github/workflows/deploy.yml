@@ -33,11 +33,13 @@ jobs:
           sudo apt-get update
           sudo ACCEPT_EULA=Y apt-get install -y msodbcsql17 unixodbc-dev
 
-    - name: 📦 Install uv
-      run: pip install uv
+    - name: Install uv
+      run: |
+          pip install uv
 
-    - name: 📦 Install project dependencies with uv
-      run: uv sync
+    - name: Sync dependencies with uv
+      run: |
+          uv sync
 
     - name: 🚀 Run DLT incremental load and create Fabric Shortcut if applicable
       run: python load_and_create_shortcut.py
